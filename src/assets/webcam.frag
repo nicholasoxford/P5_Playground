@@ -19,7 +19,7 @@ void main() {
     
     vec4 tex = texture2D(tex0, uv);
     
-    float gray = (tex.r + tex.g + tex.b) / 12.0;
+    float gray = (tex.r + tex.g + tex.b) / 3.0;
     
     float res = 20.0;
     float scl = res / (10.0);
