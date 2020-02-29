@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
+
+// this variable will hold our shader object
 let theShader
 // this variable will hold our webcam video
 let cam
@@ -9,15 +11,16 @@ function preload () {
   theShader = loadShader('assets/webcam.vert', 'assets/webcam.frag')
 }
 
+function sizeVideo () {
+  cam.size(710, 400)
+  cam.hide()
+}
 function setup () {
   // shaders require WEBGL mode to work
   createCanvas(710, 400, WEBGL)
   noStroke()
 
-  cam = createCapture(VIDEO)
-  cam.size(710, 400)
-
-  cam.hide()
+  cam = createCapture(VIDEO, sizeVideo)
 }
 
 function draw () {
