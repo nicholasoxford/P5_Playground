@@ -1,35 +1,60 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 
-// this variable will hold our shader object
-let theShader
-// this variable will hold our webcam video
-let cam
+let style
+let video
+const isTransferring = false
+let resultImg
 
-function preload () {
-  // load the shader
-  theShader = loadShader('assets/webcam.vert', 'assets/webcam.frag')
-}
-
-function sizeVideo () {
-  cam.size(710, 400)
-  cam.hide()
-}
 function setup () {
-  // shaders require WEBGL mode to work
-  createCanvas(710, 400, WEBGL)
-  noStroke()
+  createCanvas(320, 240)
 
-  cam = createCapture(VIDEO, sizeVideo)
+  video = createCapture(VIDEO, videoHide)
+
+  // The results image from the style transfer
+  // resultImg = createImg('')
+  // resultImg.hide()
+
+  // // The button to start and stop the transfer process
+  // select('#startStop').mousePressed(startStop)
+
+  // Create a new Style Transfer method with a defined style.
+  // We give the video as the second argument
+  style = ml5.styleTransfer('models/udnie', video, modelLoaded)
+}
+function videoHide () {
+  video.hide()
+}
+// function draw () {
+//   // Switch between showing the raw camera or the style
+//   if (isTransferring) {
+//     image(resultImg, 0, 0, 320, 240)
+//   } else {
+//     image(video, 0, 0, 320, 240)
+//   }
+// }
+
+// A function to call when the model has been loaded.
+function modelLoaded () {
+  select('#status').html('Model Loaded')
 }
 
-function draw () {
-  // shader() sets the active shader with our shader
-  shader(theShader)
+// // Start and stop the transfer process
+// function startStop () {
+//   if (isTransferring) {
+//     select('#startStop').html('Start')
+//   } else {
+//     select('#startStop').html('Stop')
+//     // Make a transfer using the video
+//     style.transfer(gotResult)
+//   }
+//   isTransferring = !isTransferring
+// }
 
-  // passing cam as a texture
-  theShader.setUniform('tex0', cam)
-
-  // rect gives us some geometry on the screen
-  rect(0, 0, width, height)
-}
+// // When we get the results, update the result image src
+// function gotResult (err, img) {
+//   resultImg.attribute('src', img.src)
+//   if (isTransferring) {
+//     style.transfer(gotResult)
+//   } else { console.log(err) }
+// }
