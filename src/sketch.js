@@ -1,12 +1,7 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-<<<<<<< HEAD
+/* eslint-disable no-unused-vars */
 
-let style
-let video
-const isTransferring = false
-let resultImg
-=======
+// this variable will hold our shader object
 let theShader
 // this variable will hold our webcam video
 let cam
@@ -15,65 +10,26 @@ function preload () {
   // load the shader
   theShader = loadShader('assets/webcam.vert', 'assets/webcam.frag')
 }
->>>>>>> parent of 8f80c2e... webcam
 
-function setup () {
-  createCanvas(320, 240)
-
-<<<<<<< HEAD
-  video = createCapture(VIDEO, videoHide)
-
-  // The results image from the style transfer
-  // resultImg = createImg('')
-  // resultImg.hide()
-=======
-  cam = createCapture(VIDEO)
+function videoSize () {
   cam.size(710, 400)
-
   cam.hide()
 }
->>>>>>> parent of 8f80c2e... webcam
+function setup () {
+  // shaders require WEBGL mode to work
+  createCanvas(710, 400, WEBGL)
+  noStroke()
 
-  // // The button to start and stop the transfer process
-  // select('#startStop').mousePressed(startStop)
-
-  // Create a new Style Transfer method with a defined style.
-  // We give the video as the second argument
-  style = ml5.styleTransfer('models/udnie', video, modelLoaded)
-}
-function videoHide () {
-  video.hide()
-}
-// function draw () {
-//   // Switch between showing the raw camera or the style
-//   if (isTransferring) {
-//     image(resultImg, 0, 0, 320, 240)
-//   } else {
-//     image(video, 0, 0, 320, 240)
-//   }
-// }
-
-// A function to call when the model has been loaded.
-function modelLoaded () {
-  select('#status').html('Model Loaded')
+  cam = createCapture(VIDEO, videoSize)
 }
 
-// // Start and stop the transfer process
-// function startStop () {
-//   if (isTransferring) {
-//     select('#startStop').html('Start')
-//   } else {
-//     select('#startStop').html('Stop')
-//     // Make a transfer using the video
-//     style.transfer(gotResult)
-//   }
-//   isTransferring = !isTransferring
-// }
+function draw () {
+  // shader() sets the active shader with our shader
+  shader(theShader)
 
-// // When we get the results, update the result image src
-// function gotResult (err, img) {
-//   resultImg.attribute('src', img.src)
-//   if (isTransferring) {
-//     style.transfer(gotResult)
-//   } else { console.log(err) }
-// }
+  // passing cam as a texture
+  theShader.setUniform('tex0', cam)
+
+  // rect gives us some geometry on the screen
+  rect(0, 0, width, height)
+}
